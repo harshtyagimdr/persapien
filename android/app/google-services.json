@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1702649531",
+    "firebase_url": "https://persapien-6f491.firebaseio.com",
+    "project_id": "persapien-6f491",
+    "storage_bucket": "persapien-6f491.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1702649531:android:57adb48f42fa5099c1539e",
+        "android_client_info": {
+          "package_name": "com.example.persapien"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1702649531-mnq61oa3oov3276jf6q48deskseg81sc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.persapien",
+            "certificate_hash": "cfc45c7f71e3fbeec9741fe5997f842f93ce75dd"
+          }
+        },
+        {
+          "client_id": "1702649531-l3t76rrgla5q36i3fnn3njmg05717r1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt-MIp91vAcTv7ZKGMP3JtouyJ09g-zNc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1702649531-l3t76rrgla5q36i3fnn3njmg05717r1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
