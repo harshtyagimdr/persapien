@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path; 
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'package:http/http.dart' as http;
+// http://34.87.70.63:8090/api/?url=https://storage.googleapis.com/persapien-6f491.appspot.com/1589009083121download.jpg
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -16,6 +17,19 @@ class _HomePageState extends State<HomePage> {
   bool isLoading=false;
   var value;
   var id = DateTime.now().millisecondsSinceEpoch;
+  String _output_image;
+  String url="http://34.87.70.63:8090/api/?url=";
+
+  Future<String> makeRequest(_uploadedFileURL) async{
+    var response= await http.post(url+"https://storage.googleapis.com/persapien-6f491.appspot.com/1589009083121download.jpg");
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode==200){
+      setState(() {
+         _output_image=response.body;
+      });
+    }
+  }
 
     Future chooseCamera() async {    
    await ImagePicker.pickImage(source: ImageSource.camera).then((image) {    
@@ -24,8 +38,11 @@ class _HomePageState extends State<HomePage> {
      });    
    });    
  } 
- Future uploadFile() async {   
-   isLoading=true;
+ Future uploadFile() async { 
+   setState(() {
+      isLoading=true;
+   });  
+  
     
     
    StorageReference storageReference = FirebaseStorage.instance    
@@ -35,13 +52,19 @@ class _HomePageState extends State<HomePage> {
    await uploadTask.onComplete;    
    print('File Uploaded');   
  
-   storageReference.getDownloadURL().then((fileURL) {    
+   storageReference.getDownloadURL().then((fileURL) async{    
      setState(() {  
       
        _uploadedFileURL = fileURL; 
-       print(_uploadedFileURL);
-       isLoading=false;  
-     });    
+      //  print(_uploadedFileURL);
+      //  print(url+_uploadedFileURL);
+      //  
+        isLoading=false;  
+     });
+     if (_uploadedFileURL!=null){
+     await makeRequest(_uploadedFileURL);  
+      
+     }
    });    
  }
 
@@ -57,7 +80,9 @@ class _HomePageState extends State<HomePage> {
       onPressed: (){ chooseCamera();},
       child: Icon(Icons.camera_alt),
       ),
-      body: Column(
+      body: isLoading?Center(
+          child: CircularProgressIndicator(),
+          ):Column(
         children: <Widget>[
           SizedBox(height: ScreenUtil.instance.setHeight(20),),
 
@@ -74,11 +99,15 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: ScreenUtil.instance.setHeight(20),),
 
           _image==null || _uploadedFileURL!=null?Container():
+          
           RaisedButton(
             child:Text('Upload',style:TextStyle(color:Colors.white)),
             color:Colors.blue,
             onPressed:uploadFile,
-          )
+          ),
+          _output_image!=null?
+           Image.network( _output_image, )  :Container()
+
         ],
       ),
     );
